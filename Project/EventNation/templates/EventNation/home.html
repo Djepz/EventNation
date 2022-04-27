@@ -1,0 +1,21 @@
+
+{% for evento in latest_event_list %}
+<li>
+<a href="{% url 'EventNation:home' %}">
+{{ evento.name }}
+</a>
+</li>
+{% endfor %}
+
+<ul>
+    <form action="{% url 'EventNation:criarEvento' %}" method="post">
+        {% csrf_token %}
+    <h2>Texto da nova Questão: <input type="text" name="name" id="name" value="{{ name.id }}" />
+    <label for="name">{{ name }}
+    </label>
+    </h2>
+
+
+        <p><input type="submit" value="Gravar nova Questão" /></p>
+    </form>
+</ul>
