@@ -1,0 +1,13 @@
+<ul>
+    <form class="form" action="{% url 'EventNation:createUser' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Username: <input type="text" name="username" id="username" value="{{ username.id }}" />
+    </h2>
+        <h2>Email: <input type="text" name="mail" id="mail" value="{{ mail.id }}" />
+    </h2>
+        <h2>Password: <input type="password" name="password" id="password" value="{{ password.id }}" />
+    </h2>
+        <p><input type="submit" value="register" /></p>
+    </form>
+</ul>
+<p><a href="{% url 'EventNation:home' %}">Return to homepage?</a></p>

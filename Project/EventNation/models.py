@@ -26,6 +26,8 @@ class Event(models.Model):
     date = models.DateField('data do evento', default=datetime.date(2022,5,30))
     location = models.CharField(max_length=200, default="iscte")
     details = models.CharField(max_length=500, default="teste")
-    more_details = models.CharField(max_length=500, default="teste")
+    more_details = models.CharField(max_length=500, default="teste", null=True)
     max_tickets = models.IntegerField(validators=[MinValueValidator(50)], default=1000)
     price = models.FloatField(validators=[MinValueValidator(0)], default=5)
+
+

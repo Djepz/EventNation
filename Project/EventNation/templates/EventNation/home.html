@@ -7,15 +7,19 @@
 </li>
 {% endfor %}
 
-<ul>
-    <form action="{% url 'EventNation:criarEvento' %}" method="post">
-        {% csrf_token %}
-    <h2>Texto da nova Questão: <input type="text" name="name" id="name" value="{{ name.id }}" />
-    <label for="name">{{ name }}
-    </label>
-    </h2>
+{% if request.user.organizer %}
+<p><a href="{% url 'EventNation:createEvent' %}">Start your own Event</a></p>
+{% endif %}
 
 
-        <p><input type="submit" value="Gravar nova Questão" /></p>
-    </form>
-</ul>
+
+{% if not request.user.is_authenticated %}
+<p><a href="{% url 'EventNation:createUser' %}">Sign Up</a></p>
+<p><a href="{% url 'EventNation:login' %}">Sign In</a></p>
+{% endif %}
+{% if request.user.is_authenticated %}
+    {% if not request.user.organizer %}
+        <p><a href="{% url 'EventNation:organizer' %}">Become an Organizer</a></p>
+        {% endif %}
+<p><a href="{% url 'EventNation:logout' %}">Logout</a></p>
+{% endif %}

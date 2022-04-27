@@ -1,0 +1,20 @@
+<ul>
+    <form class="form" action="{% url 'EventNation:createEvent' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Name: <input type="text" name="name" id="name" value="{{ name.id }}" />
+    </h2>
+        <h2>Date: <input type="date" name="date" id="date" value="{{ date.id }}" />
+    </h2>
+        <h2>Location: <input type="text" name="location" id="location" value="{{ location.id }}" />
+    </h2>
+        <h2>Details (including start hour): <input type="text" name="details" id="details" value="{{ details.id }}" />
+    </h2>
+        <h2>More details: <input type="text" name="more_details" id="more_details" value="{{ more_details.id }}" />
+    </h2>
+        <h2>Maximum tickets to put on sale: <input type="number" name="max_tickets" id="max_tickets" value="{{ max_tickets.id }}" />
+    </h2>
+        <h2>Price: <input type="number" name="price" id="price" value="{{ price.id }}" />
+    </h2>
+        <p><input type="submit" value="NewEvent" /></p>
+    </form>
+</ul>
