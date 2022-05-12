@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <title>EventNation</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'EventNation/style.css' %}">
+</head>
+
+<body style="background-color: rgb(2, 17, 31);">
+    <nav style="background-color: orange; height:50px; position: absolute; left: 0px; right: 0px;">
+        <a style="color: black; position: relative; top: 10px; left: 10px; font-size: large;" href="#home">Home</a>
+        <a style="color: black; position: relative; top: 10px; left: 50px; font-size: large" href="#contact">Contact</a>
+        <a style="color: black; position: relative; top: 10px; left: 100px; font-size: large" href="#contact">Tipos</a>
+        <a style="color: black; position: relative; top: 10px; left: 150px; font-size: large" href="#about">About</a>
+        <a style="color: black; position: absolute; top: 10px; right: 10px; font-size: large" href="#login">Nome do user
+            + imagem</a>
+    </nav>
+
+    <div style="position: relative; top: 100px">
+        <h2>Imagem</h2>
+        <h2>Nome</h2>
+        <button> criar evento</button>
+        <h2 style="position: absolute; left: 150px; top:-10px">lista dos eventos criados</h2>
+        <button style="position: absolute; left: 150px; top: 50px">cancelar evento</button>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+.wrapper {
+    position: relative;
+    left: -70px;
+    transform: translate(-50%, -50%) rotateY(180deg);
+    display: flex;
+}
+
+.wrapper input {
+    display: none;
+}
+
+.wrapper label {
+    display: block;
+    cursor: pointer;
+    width: 20px;
+}
+
+.wrapper label:before {
+    content: '★';
+    position: relative;
+    display: block;
+    font-size: 20px;
+    color: white;
+}
+
+.wrapper label:after {
+    content: '★';
+    position: absolute;
+    display: block;
+    font-size: 20px;
+    color: red;
+    top: 0;
+    opacity: 0;
+    transition: .6s;
+}
+
+.wrapper label:hover:after,
+.wrapper label:hover~label:after,
+.wrapper input:checked~label:after {
+    opacity: 1;
+}

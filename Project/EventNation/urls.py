@@ -9,5 +9,7 @@ urlpatterns = [
  path('register', views.createUser, name="createUser"),
  path('login', views.loginView, name="login"),
  path('logout', views.logoutView, name="logout"),
- path('organizer', views.becomeOrganizer, name="organizer")
+ path('organizer', views.becomeOrganizer, name="organizer"),
+ path('profile', views.profileView, name="profile"),
+ path('<int:event_id>/review', views.review, name="review")
 ]

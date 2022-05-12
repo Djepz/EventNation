@@ -1,5 +1,7 @@
+from django.core.files.storage import FileSystemStorage
+from django.db.models import Avg
 from django.shortcuts import render
-from .models import Event, NormalUser, Organizer
+from .models import Event, Organizer, Review
 from django.utils import timezone
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -10,15 +12,27 @@ from django.contrib import messages
 
 
 def home(request):
-    latest_event_list = Event.objects.order_by('-pub_data')
+    comediaRating = Event.objects.filter(category="Comédia").annotate(avg_rating=Avg('reviews__rating')).order_by('-avg_rating')[:1]
+    concertoRating = Event.objects.filter(category="Concerto").annotate(avg_rating=Avg('reviews__rating')).order_by('-avg_rating')[
+              :1]
+    festivalRating = Event.objects.filter(category="Festival").annotate(avg_rating=Avg('reviews__rating')).order_by('-avg_rating')[
+              :1]
+    comedia = Event.objects.filter(category="Comédia").order_by('-date')[:3]
+    concerto = Event.objects.filter(category="Concerto").order_by('-date')[:1]
+    festival = Event.objects.filter(category="Festival").order_by('-date')[:1]
     context = {
-        'latest_event_list': latest_event_list,
+        'comedia': comedia,
+        'concerto': concerto,
+        'festival': festival,
+        'comediaRating': comediaRating,
+        'concertoRating': concertoRating,
+        'festivalRating': festivalRating,
     }
-    return render(request, 'EventNation/home.html', context)
+    return render(request, 'EventNation/EventNation.html', context)
 
 
 def createEvent(request):
-    if request.method == 'POST' :
+    if request.method == 'POST':
         name = request.POST['name']
         date = request.POST['date']
         location = request.POST['location']
@@ -26,16 +40,21 @@ def createEvent(request):
         more_details = request.POST['more_details']
         max_tickets = request.POST['max_tickets']
         price = request.POST['price']
+        category = request.POST['category']
+        file = request.FILES['myfile']
 
         if (not name or not date or not location
-                or not details or not max_tickets or not price):
+                or not details or not max_tickets or not price or not file or not category):
             return render(request, 'EventNation/home.html',
                           {'error_message': "Dados incorretos", })
         else:
             e = Event(name=name, date=date, location=location, details=details,
                       more_details=more_details, max_tickets=max_tickets, price=price,
-                      pub_data=timezone.now())
+                      pub_data=timezone.now(), category=category)
             e.save()
+            fs = FileSystemStorage()
+            name = str(e.name) + '.png'
+            fs.save(name, file)
         return HttpResponseRedirect(
             reverse('EventNation:home', args=()))
     else:
@@ -47,7 +66,8 @@ def createUser(request):
         username = request.POST['username']
         mail = request.POST['mail']
         password = request.POST['password']
-        if not username or not password or not mail:
+        file = request.FILES['myfile']
+        if not username or not password or not mail or not file:
             return render(request, 'EventNation/register.html', )
         else:
             user = authenticate(username=username, password=password)
@@ -55,9 +75,12 @@ def createUser(request):
                 return render(request, 'EventNation/register.html', {'user_exists': "User already exists", })
             else:
                 user = User.objects.create_user(username, mail, password)
-                ut = NormalUser(user=user)
+                ut = User(user=user)
                 ut.save()
                 user.save()
+                fs = FileSystemStorage()
+                name = str(user.id) + '.png'
+                fs.save(name, file)
         return HttpResponseRedirect(reverse('EventNation:home', args=())) #envia de volta para o register.html for some reason
     else:
         return render(request, 'EventNation/register.html')
@@ -88,3 +111,16 @@ def becomeOrganizer(request):
     ut = Organizer(user=user)
     ut.save()
     return HttpResponseRedirect(reverse('EventNation:home', args=()))
+
+
+def profileView(request):
+    return render(request, 'EventNation/profile.html')
+
+
+def rate1(request):
+    user = request.user
+
+
+def review(request, event_id):
+    rate = request.POST['review']
+    r = Review(reviewer=request.user, event=event_id, rating=rate)

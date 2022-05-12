@@ -1,6 +1,7 @@
 <ul>
     <form class="form" action="{% url 'EventNation:createUser' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
+        <input type="file" name="myfile">
     <h2>Username: <input type="text" name="username" id="username" value="{{ username.id }}" />
     </h2>
         <h2>Email: <input type="text" name="mail" id="mail" value="{{ mail.id }}" />

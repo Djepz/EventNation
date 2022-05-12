@@ -1,6 +1,7 @@
 <ul>
     <form class="form" action="{% url 'EventNation:createEvent' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
+        <input type="file" name="myfile">
     <h2>Name: <input type="text" name="name" id="name" value="{{ name.id }}" />
     </h2>
         <h2>Date: <input type="date" name="date" id="date" value="{{ date.id }}" />
@@ -15,6 +16,7 @@
     </h2>
         <h2>Price: <input type="number" name="price" id="price" value="{{ price.id }}" />
     </h2>
+        <h2>Category: <input type="text" name ="category" id="category" value="{{ category.id }}"/></h2>
         <p><input type="submit" value="NewEvent" /></p>
     </form>
 </ul>

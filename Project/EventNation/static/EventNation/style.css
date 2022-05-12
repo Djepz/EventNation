@@ -1,0 +1,74 @@
+.div-category {
+    left: 0px;
+    right: 0px;
+    position: absolute;
+}
+
+.nav-category {
+    background-color: black;
+    position: relative;
+    top: 1px;
+    height: 50px;
+    left: 0px;
+    right: 0px
+}
+
+.images-horizontal {
+    display: inline-block;
+    position: relative;
+    top: 10px;
+    margin-left: 25px;
+    height: 300px;
+    border: 5px solid black;
+}
+
+.images-treatment {
+    border: 5px solid black;
+    display: inline-block;
+    height: 280px;
+    width: 350px;
+}
+
+.images-treatment img {
+    width: 100%;
+    text-align: center;
+
+}
+
+.container {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.box-1 {
+    flex: 1;
+    border: 5px solid black;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: black;
+}
+
+.box-1 img {
+    width: 100%;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-left: 5px;
+    height: 70%;
+
+
+}
+
+.box-2 {
+    flex: 1;
+}
+
+.box-3 {
+    flex: 1;
+
+}
+
+.box-4 {
+    flex: 1;
+}
