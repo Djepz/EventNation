@@ -37,3 +37,10 @@ class Review(models.Model):
 class Ticket(models.Model):
     organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+
+class Comment(models.Model):
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='comments', on_delete=models.CASCADE)
+    comment = models.TextField(max_length=200)
+    pub_data = models.DateTimeField('data de  publicacao', default=datetime.datetime.now())

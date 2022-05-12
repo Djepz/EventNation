@@ -1,7 +1,7 @@
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Avg
-from django.shortcuts import render
-from .models import Event, Organizer, Review
+from django.shortcuts import render, get_object_or_404
+from .models import Event, Organizer, Review, Comment
 from django.utils import timezone
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -117,10 +117,22 @@ def profileView(request):
     return render(request, 'EventNation/profile.html')
 
 
-def rate1(request):
-    user = request.user
-
-
 def review(request, event_id):
     rate = request.POST['review']
-    r = Review(reviewer=request.user, event=event_id, rating=rate)
+    event = get_object_or_404(Event, pk=event_id)
+    r = Review(reviewer=request.user, event=event, rating=rate)
+    r.save()
+    return HttpResponseRedirect(reverse('EventNation:eventPage', args=(event_id,)))
+
+def eventPage(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    comments = Comment.objects.filter(event=event).order_by('-pub_data')
+    return render(request, 'EventNation/event.html', {'event': event, 'comments': comments})
+
+
+def comment(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    comment = request.POST['comment']
+    c = Comment(commenter=request.user, event=event, comment=comment)
+    c.save()
+    return HttpResponseRedirect(reverse('EventNation:eventPage', args=(event_id,)))
