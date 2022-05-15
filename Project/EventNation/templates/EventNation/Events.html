@@ -5,21 +5,21 @@
 {% load index %}
 <head>
     <title>EventNation</title>
-    <link rel="stylesheet" type="text/css" href="events.css">
-    <link rel="stylesheet" type="text/css" href="rating.css">
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'EventNation/events.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'EventNation/rating.css' %}">
+    {% endblock %}
 </head>
 {% block slideshow %}{% endblock %}
 {% block content %}
     <center>
         <div class="container">
             <div>
-                <img src="{% get_static_prefix %}media/{{ film.name }}.png">
-                <p style="text-align: left;">{{ film.name }}</p>
-                <p style="text-align: left;">Data: {{ film.date }}</p>
-                <div class=" wrapper">
-                    <p style="position: relative; left: 7px; color: white">Rating: {{ event.avg_rating }}</p>
-                </div>
-                <button class="button" style="width: 100%;">Adquirir</button>
+                <img style="max-width: 200px; height: auto" src="{% get_static_prefix %}media/{{ event.name }}{{ event.id }}.png">
+                <p style="text-align: left;">{{ event.name }}</p>
+                <p style="text-align: left;">Data: {{ event.date }}</p>
+                <p style="color: black; text-align: left;"> Rating: {{ event.avg_rating|floatformat:1 }} </p>
+                <button class="button" style="width: 100%;"><a href="{% url 'EventNation:purchase' event.id %}">Adquirir</a></button>
             </div>
             <div class="text">
 
@@ -27,27 +27,42 @@
                 <p>preço: {{ event.price }}</p>
                 <p>Detalhes: {{ event.details }}</p>
                 <p>informação adicional: {{ event.more_details }}</p>
-
+                <form action="{% url 'EventNation:review' event.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="number" placeholder="Rating (entre 0 e 5)" name="rating" id="rating" required>
+                    <button type="submit" value="rate">Rate</button>
+                </form>
+                {% if request.user.organizer and request.user.organizer == event.organizer or request.user.is_superuser %}
+                    <button class="button" style="width: 100%;"><a href="{% url 'EventNation:alterEvent' event.id %}">Alterar Evento</a></button>
+                    <button class="button" style="width: 100%;"><a href="{% url 'EventNation:removeEvent' event.id %}">Remover Evento</a></button>
+                {% endif %}
             </div>
+            <center>
+    </center>
 
         </div>
     </center>
 
+
+
     <center>
         <form action="{% url 'EventNation:comment' event.id %}" method="POST">
-           <h2>Comentário: <input type="text" name="comment" id="comment" value="{{ comment.id }}" /></h2>
+            {% csrf_token %}
+            <textarea select name="comment" id="comment" class="comment">Type your comment here.</textarea>
             <br>
-            <input type="submit" name="submit" value="Send">
+            <input style="position: relative; top: 200px;" type="submit" name="submit" value="Send">
         </form>
     </center>
 
-    {% if comments %}
-    <ul>
+    <center>
+        {% if comments %}
     {% for comment in comments %}
-<li>{{ comment.comment }}</li>
-{% endfor %}
-    </ul>
-{% endif %}
+        <textarea style="position: relative; top:250px;" readonly class="comment">{{ comment.commenter.username }}: "{{ comment.comment }}"</textarea>
+        <br>
+    {% endfor %}
+    {% endif %}
+    </center>
+
 
 </body>
 {% endblock %}

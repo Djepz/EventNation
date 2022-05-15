@@ -6,9 +6,11 @@
 
 <head>
     <title>EventNation</title>
-    <link rel="stylesheet" type="text/css" href="registar.css">
-    <link rel="stylesheet" type="text/css" href="events.css">
-    <link rel="stylesheet" type="text/css" href="rating.css">
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'EventNation/registar.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'EventNation/events.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'EventNation/rating.css' %}">
+    {% endblock %}
 
 </head>
 
@@ -18,43 +20,38 @@
     <center>
         <div class="container" style="top: 60px; max-width: 700px; left: -300px;">
             <div>
-                <img src="{{% get_static_prefix %}media/{{ film.name }}.png}">
-                <p style="text-align: left;">Nome</p>
-                <p style="text-align: left;">Data:</p>
-                <div class=" wrapper">
-                    <input type="radio" name="rate" id="rate1">
-                    <label for="rate1"></label>
-                    <input type="radio" name="rate" id="rate2">
-                    <label for="rate2"></label>
-                    <input type="radio" name="rate" id="rate3">
-                    <label for="rate3"></label>
-                    <input type="radio" name="rate" id="rate4">
-                    <label for="rate4"></label>
-                    <input type="radio" name="rate" id="rate5">
-                    <label for="rate5"></label>
-                </div>
+                <img style="max-width: 250px;height: auto" src="{% get_static_prefix %}media/{{ event.name }}{{ event.id }}.png">
+                <p style="text-align: center; color:white">{{ event.name }}</p>
+                <p style="text-align: center; color: white">Data: {{ event.date }}</p>
+                <p style="color: white; text-align: center;"> Rating: {{ event.avg_rating|floatformat:1 }} </p>
             </div>
             <div class="text">
 
-                <p>Lotação: {{ bought }} / {{ film.max_tickets }}</p>
-                <p>preço: {{ film.price }}</p>
-                <p>Detalhes: {{ film.details }}</p>
-                <p>informação adicional: {{ film.more_details }}</p>
+                <p>Lotação: {{ bought }} / {{ event.max_tickets }}</p>
+                <p>Preço: {{ event.price }}</p>
+                <p>Detalhes: {{ event.details }}</p>
+                <p>informação adicional: {{ event.more_details }}</p>
 
             </div>
 
         </div>
     </center>
-
-    <form action="action_page.php" style="position: absolute; top: 130px; left: 1100px;">
+    <form action="{% url 'EventNation:purchase' event.id %}" method="post" style="position: absolute; top: 130px; left: 1100px;">
+       {% csrf_token %}
         <div class="container-register">
-            <h1>Aquisição</h1>
+            {% if maxed %}
+        <h2>{{ maxed }}</h2>
+    {% endif %}
+        {% if organizer %}
+        <h2>{{ organizer }}</h2>
+    {% endif %}
+            <h1>Purchase</h1>
             <hr>
-            <label for="email"><b>conta bancária</b></label>
+            <label for="email"><b>Bank Account</b></label>
             <input class="input" type="text" placeholder="nº conta" name="conta" id="conta" required>
 
             <hr>
-            <button type="submit" class="registerbtn">Adquirir</button>
+            <button type="submit" class="registerbtn">Purchase</button>
         </div>
 
     </form>

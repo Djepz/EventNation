@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+{% extends "EventNation/EventNation.html" %}
+{% load static %}
+<head>
+    <title>EventNation</title>
+    {% block css %}
+    {% endblock %}
+</head>
+{% block slideshow %}{% endblock %}
+{% block content %}
+
+{% if event %}
+    <h2 style="margin-top: 150px; text-align: center">You are about to remove the event: {{ event.name }}, once removed the event information
+        along with reviews, comments and tickets will be permanently deleted</h2>
+    <form action="{% url 'EventNation:removeEvent' event.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" style="margin-left: auto; margin-right: auto; display: block;" class="button">Apagar Evento </button>
+    </form>
+        <button style="margin-top: 15px; margin-left: auto; margin-right: auto; display: block;" class="button"><a href="{% url 'EventNation:eventPage' event.id %}"> Voltar atrás </a></button>
+{% endif %}
+{% endblock %}

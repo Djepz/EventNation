@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+{% extends "EventNation/EventNation.html" %}
+{% load static %}
+<head>
+    <title>EventNation</title>
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'EventNation/registar.css' %}">
+    {% endblock %}
+</head>
+
+{% block slideshow %}{% endblock %}
+{% block content %}
+
+    {% if error_message %}
+    <h2> {{ error_message }} </h2>
+    {% endif %}
+
+    <form action="{% url 'EventNation:createEvent' %}" method="post" enctype="multipart/form-data" style="position: absolute; top: 150px;">
+    {% csrf_token %}
+        <div class="container-register">
+            <h1>Create Event</h1>
+            <p>Please fill in this form to create an Event.</p>
+            <hr>
+
+            <label><b>Name</b></label>
+            <input class="input" type="text" placeholder="Event name" name="name" id="name" required>
+
+            <label><b>Max Tickets:</b></label>
+            <input class="input" type="number" placeholder="Max tickets" name="max_tickets" id="max_tickets" required>
+            <br>
+            <label><b>Price:</b></label>
+            <input class="input" type="number" placeholder="Price" name="price" id="price" required>
+            <br>
+            <label><b>Location</b></label>
+            <input class="input" type="text" placeholder="Location" name="location" id="location" required>
+            <label><b>Event Image:</b></label>
+            <input type="file" name="myfile">
+            <br>
+            <label><b>Date</b></label>
+            <input class="input" type="date" placeholder="Event Date" name="date" id="date" required>
+            <br>
+            <label><b>Details</b></label>
+            <input class="input" type="text" placeholder="Details" name="details" id="details" required>
+
+            <label><b>Aditional Details</b></label>
+            <input class="input" type="text" placeholder="Information" name="more_details" id="more_details">
+
+            <label for="category">Choose a category:</label>
+            <select name="category" id="category" required>
+                <option value="Comédia">Comedy</option>
+                <option value="Concerto">Concert</option>
+                <option value="Festival">Festival</option>
+            </select>
+
+            <hr>
+            <button type="submit" class="registerbtn">Create Event</button>
+        </div>
+    </form>
+
+</body>
+{% endblock %}
+</html>

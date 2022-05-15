@@ -33,12 +33,12 @@ class Event(models.Model):
 class Review(models.Model):
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, related_name='reviews', on_delete=models.CASCADE)
-    rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
+    rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], default=0)
 
 
 class Ticket(models.Model):
-    organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='ticket', on_delete=models.CASCADE)
 
 
 class Comment(models.Model):

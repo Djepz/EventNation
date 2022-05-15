@@ -5,8 +5,10 @@
 {% load index %}
 <head>
     <title>EventNation</title>
-    <link rel="stylesheet" type="text/css" href="rating.css">
-    <link rel="stylesheet" type="text/css" href="listEvents.css">
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'EventNation/listEvents.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'EventNation/rating.css' %}">
+    {% endblock %}
 
 </head>
 
@@ -20,14 +22,13 @@
 
 
     <div class="container-list" style="left: 200px;">
-        {% for film in films %}
+        {% for event in events %}
         <div class="box-1-list">
-            <img src="{% get_static_prefix %}media/{{ film.name }}.png" alt="" />
-            <p style="position: relative; left: 7px; color:white">{{ film.name }}</p>
-            <p style="position: relative; left: 7px; color: white">data: {{ film.date }}</p>
-            <div class="wrapper">
-               <p style="position: relative; left: 7px; color: white">Rating: {{ film.avg_rating }}</p>
-            </div>
+         <a href="{% url 'EventNation:eventPage' event.id %}">
+             <img src="{% get_static_prefix %}media/{{ event.name }}{{ event.id }}.png" alt="" /></a>
+            <p style="text-align: center; color:white">{{ event.name }}</p>
+            <p style="text-align: center; color: white">Data: {{ event.date }}</p>
+            <p style="color: white; text-align: center;"> Rating: {{ event.avg_rating}} </p>
         </div>
         {% endfor %}
     </div>

@@ -4,53 +4,49 @@
 {% load index %}
 <head>
     <title>EventNation</title>
+    {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static "EventNation/slideshow.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static 'EventNation/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'EventNation/rating.css' %}">
+    {% endblock %}
 </head>
 {% block nav %}
 <body style="background-color: white;">
 
     <center>
-        <h1><a href="{% url 'EventNation:home' %}">EventNation</a></h1>
+        <h1><a style="color: black" href="{% url 'EventNation:home' %}">EventNation</a></h1>
     </center>
     <nav style="background-color: black; height:50px; position: absolute; left: 0px; right: 0px;">
-        <h4 style="color: white; position: absolute; left: 50px; font-size: large; margin-top: 15px;" href="#contact">
-            About</h4>
-        <h4 style="color: white; position: absolute; left: 150px; font-size: large; margin-top: 15px;" href="#contact">
+        <h4 style="color: white; position: absolute; left: 50px; font-size: large; margin-top: 15px;"> <a style="color: white" href="{% url 'EventNation:about' %}">
+            About
+        </a></h4>
+        <h4 style="color: white; position: absolute; left: 150px; font-size: large; margin-top: 15px;"> <a style="color: white" href="{% url 'EventNation:TopRated' %}">
             Top Rated
-        </h4>
+        </a></h4>
         {% if not request.user.is_authenticated %}
-        <h4 style="color: white; position: absolute; right: 150px; font-size: large; margin-top: 15px;"> <a href="{% url 'EventNation:login' %}">
+        <h4 style="color: white; position: absolute; right: 150px; font-size: large; margin-top: 15px;"> <a style="color: white" href="{% url 'EventNation:login' %}">
             Login
         </a></h4>
         <h4 style="background-color:white; color:black; position: absolute; margin-top: 15px; right: 40px; font-size: large">
-            <a href="{% url 'EventNation:CreateUser' %}">Register</a></h4>
+            <a style="color: black" href="{% url 'EventNation:CreateUser' %}">Register</a></h4>
     {% else %}
-    <h4 style="color: white; position: absolute; right: 150px; font-size: large; margin-top: 15px;"> <a href="{% url 'EventNation:profile' %}">
+    <h4 style="color: white; position: absolute; right: 150px; font-size: large; margin-top: 15px;"> <a style="color: white" href="{% url 'EventNation:profile' %}">
             {{ request.user.username }}
         </a></h4>
         <h4 style="background-color:white; color:black; position: absolute; margin-top: 15px; right: 40px; font-size: large">
-            <a href="{% url 'EventNation:logout' %}">Log out</a></h4>
+            <a style="color: black" href="{% url 'EventNation:logout' %}">Log out</a></h4>
     {% endif %}
     </nav>
     {% endblock %}
 {% block content %}
     <div>
         <div class="slideshow-container">
+            {% for event in nextEvents %}
 
             <div class="mySlides fade">
-                <img class="img-dimension" src="{% static 'EventNation/images/iscte1.jpg' %}" style="width:100%">
+                <img class="img-dimension" src="{% get_static_prefix %}media/{{ event.name }}{{ event.id }}.png" style="width:100%">
             </div>
-
-            <div class="mySlides fade">
-                <img class="img-dimension" src="{% static 'EventNation/images/iscte_logo.png' %}" style="width:100%">
-            </div>
-
-            <div class="mySlides fade">
-                <img class="img-dimension" src="{% static 'EventNation/images/party.jfif' %}" style="width:100%">
-            </div>
-
+        {% endfor %}
         </div>
         <br>
 
@@ -86,28 +82,21 @@
                 <div class="container">
                     {% for fest in festival %}
                     <div class="box-1">
-                        <img style="max-width: 250px;height: auto" src="{% get_static_prefix %}media/{{ fest.name }}.png" alt="" />
-                        <p style="position: relative; left: 7px; color:white">{{ fest.name }}</p>
-                        <div class="wrapper">
-                             <input type="radio" name="rate" id="rate1">
-                            <label for="rate1"></label>
-                            <input type="radio" name="rate" id="rate2">
-                            <label for="rate2"></label>
-                            <input type="radio" name="rate" id="rate3">
-                            <label for="rate3"></label>
-                            <input type="radio" name="rate" id="rate4">
-                            <label for="rate4"></label>
-                            <input type="radio" name="rate" id="rate5">
-                            <label for="rate5"></label>
-                        </div>
+                    <a href="{% url 'EventNation:eventPage' fest.id %}">
+                        <img style="display: block; margin-left: auto; margin-right: auto; max-height: 260px; max-width: 460px; height:auto; width: auto" src="{% get_static_prefix %}media/{{ fest.name }}{{ fest.id }}.png" alt="" /></a>
+
+                       <p style="text-align: center; color:white">{{ fest.name }}</p>
+                        <p style="text-align: center; color: white">Data: {{ fest.date }}</p>
+                        <p style="color: white; text-align: center;"> Rating: {{ fest.avg_rating|floatformat:1 }} </p>
                     </div>
                     {% endfor %}
 
                     <div class="box-1" style="background-color: gray;">
                         <h2 style="text-align: center;">Top Rated</h2>
                         <ul style="position: relative; left: 20px;">
-                           {% for fest in festivalRating %}
-                            <li>{{ rating }}</li>
+                           {% for rating in festivalRating %}
+                               <a href="{% url 'EventNation:eventPage' rating.id %}">
+                                   <li style="font-size: Large; margin-top: 20px;">{{ rating }}</li></a>
                             {% endfor %}
                         </ul>
                     </div>
@@ -126,11 +115,11 @@
                 <div class="container">
                     {% for com in comedia %}
                     <div class="box-1">
-                        <img style="max-width: 250px;height: auto" src="{% get_static_prefix %}media/{{ com.name }}.png" alt="" />
-                        <p style="position: relative; left: 7px; color:white">{{ com.name }}</p>
-                        <div class="wrapper">
-                            <p> Rating: {{ com.avg_rating }}</p>
-                        </div>
+                    <a href="{% url 'EventNation:eventPage' com.id %}">
+                        <img style="display: block; margin-left: auto; margin-right: auto; max-height: 260px; max-width: 460px; height:auto; width: auto" src="{% get_static_prefix %}media/{{ com.name }}{{ com.id }}.png" alt="" /></a>
+                         <p style="text-align: center; color:white">{{ com.name }}</p>
+                        <p style="text-align: center; color: white">Data: {{ com.date }}</p>
+                        <p style="color: white; text-align: center;"> Rating: {{ com.avg_rating|floatformat:1 }} </p>
                     </div>
                     {% endfor %}
 
@@ -138,7 +127,8 @@
                         <h2 style="text-align: center;">Top Rated</h2>
                         <ul style="position: relative; left: 20px;">
                             {% for rating in comediaRating %}
-                            <li>{{ rating }}</li>
+                                <a href="{% url 'EventNation:eventPage' rating.id %}">
+                                    <li style="font-size: Large; margin-top: 20px;">{{ rating }}</li></a>
                             {% endfor %}
                         </ul>
                     </div>
@@ -156,11 +146,11 @@
                 <div class="container">
                     {% for conc in concerto %}
                     <div class="box-1">
-                        <img style="max-width: 250px;height: auto" src="{% get_static_prefix %}media/{{ conc.name }}.png" alt="" />
-                        <p style="position: relative; left: 7px; color:white">{{ conc.name }}</p>
-                        <div class="wrapper">
-                            <p> Rating: {{ conc.avg_rating }}</p>
-                        </div>
+                    <a href="{% url 'EventNation:eventPage' conc.id %}">
+                        <img style="display: block; margin-left: auto; margin-right: auto; max-height: 260px; max-width: 460px; height:auto; width: auto" src="{% get_static_prefix %}media/{{ conc.name }}{{ conc.id }}.png" alt="" /></a>
+                         <p style="text-align: center; color:white">{{ conc.name }}</p>
+                        <p style="text-align: center; color: white">Data: {{ conc.date }}</p>
+                        <p style="color: white; text-align: center;"> Rating: {{ conc.avg_rating|floatformat:1 }} </p>
                     </div>
                 {% endfor %}
 
@@ -168,7 +158,8 @@
                         <h2 style="text-align: center;">Top Rated</h2>
                         <ul style="position: relative; left: 20px;">
                             {% for rating in concertoRating %}
-                            <li>{{ rating }}</li>
+                                <a href="{% url 'EventNation:eventPage' rating.id %}">
+                                    <li style="font-size: Large; margin-top: 20px;">{{ rating }}</li></a>
                             {% endfor %}
                         </ul>
                     </div>

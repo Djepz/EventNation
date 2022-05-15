@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+{% extends "EventNation/EventNation.html" %}
+{% load static %}
+{% load index %}
+<head>
+    <title>EventNation</title>
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'EventNation/registar.css' %}">
+    {% endblock %}
+</head>
+
+{% block slideshow %}{% endblock %}
+{% block content %}
+    {% if error_message %}
+    <h2> {{ error_message }} </h2>
+    {% endif %}
+
+    <form action="{% url 'EventNation:alterEvent' event.id %}" method="post" style="position: absolute; top: 150px;">
+    {% csrf_token %}
+        <div class="container-register">
+            <h1>Alter Event</h1>
+            <p>Please change the field that require an alteration.</p>
+            <hr>
+
+            <label><b>Max Tickets:</b></label>
+            <input class="input" type="number" value="{{ event.max_tickets }}" name="max_tickets" id="max_tickets" required>
+            <br>
+            <label><b>Price:</b></label>
+            <input class="input" type="number" value="{{ event.price }}" name="price" id="price" required>
+            <br>
+            <label><b>Location</b></label>
+            <input class="input" type="text" value="{{ event.location }}" name="location" id="location" required>
+            <br>
+            <label><b>Date</b></label>
+            <input class="input" type="date" value="{{ event.date }}" name="date" id="date" required>
+            <br>
+            <label><b>Details</b></label>
+            <input class="input" type="text" value="{{ event.details }}" name="details" id="details" required>
+
+            <label><b>Aditional Details</b></label>
+            <input class="input" type="text" value="{{ event.more_details }}" name="more_details" id="more_details">
+
+            <hr>
+            <button type="submit" class="registerbtn">Change Event</button>
+        </div>
+    </form>
+
+{% endblock %}

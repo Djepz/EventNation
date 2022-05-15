@@ -5,57 +5,48 @@
 {% load index %}
 <head>
     <title>EventNation</title>
-    <link rel="stylesheet" type="text/css" href="rating.css">
-    <link rel="stylesheet" type="text/css" href="listEvents.css">
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'EventNation/listEvents.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'EventNation/rating.css' %}">
+    {% endblock %}
 
 </head>
 
-<body style="background-color: white;">
-    <center>
-        <h1>EventNation</h1>
-    </center>
-    <nav style="background-color: black; height:50px; position: absolute; left: 0px; right: 0px;">
-        <h4 style="color: white; position: absolute; left: 50px; font-size: large; margin-top: 15px;" href="#contact">
-            About</h4>
-        <h4 style="color: white; position: absolute; left: 150px; font-size: large; margin-top: 15px;" href="#contact">
-            Top Rated
-        </h4>
-        <h4 style="color: white; position: absolute; right: 120px; font-size: large; margin-top: 15px;" href="#login">
-            Nome do user
-        </h4>
-        <h4 style="background-color:white; color:black; position: absolute; margin-top: 15px; right: 40px; font-size: large"
-            href="#Logout">Log out</h4>
-    </nav>
+{% block slideshow %} {% endblock %}
+{% block content %}
 
 
     <div class="div">
-        <img src="comedi1.jpg" alt="">
-        <h2 style="color: white; margin-left: 5px;">Nome</h2>
-        <h2 style="color: white; margin-left: 5px;">+info se necessário</h2>
+    {% if not request.user.is_superuser %}
+        <img style="max-height: 200px; width: auto" src="{% get_static_prefix %}media/{{ request.user.id }}.png" alt="">
+        {% endif %}
+        <h2 style="color: white; margin-left: 5px;">{{ request.user.username }}</h2>
+        <h2 style="color: white; margin-left: 5px;">{{ request.user.email }}</h2>
     </div>
-
+{% if not request.user.is_superuser %}
     <nav
         style="position: absolute; background-color: black; top:150px; left: 250px; height: 50px; right: 0px; margin-right: 10px;">
         <h1 style="color: white; text-align: center;">Lista de Eventos</h1>
     </nav>
 
 
-
     <div class="container-list">
-        {% for film in films %}
+        {% for event in events %}
         <div class="box-1-list">
-            <img src="{% get_static_prefix %}media/{{ film.name }}.png" alt="" />
-            <p style="position: relative; left: 7px; color:white">{{ film.name }}</p>
-            <p style="position: relative; left: 7px; color: white">data: {{ film.date }}</p>
-            <div class="wrapper">
-                <p style="position: relative; left: 7px; color: white">Rating: {{ film.avg_rating }}</p>
-            </div>
+             <a href="{% url 'EventNation:eventPage' event.id %}">
+                 <img src="{% get_static_prefix %}media/{{ event.name }}{{ event.id }}.png" alt="" /></a>
+            <p style="text-align: center; color:white">{{ event.name }}</p>
+            <p style="text-align: center; color: white">Data: {{ event.date }}</p>
+            <p style="color: white; text-align: center;"> Rating: {{ event.avg_rating|floatformat:1 }} </p>
         </div>
         {% endfor %}
-
-
     </div>
-
+    {% if request.user.organizer %}
+        <button style="position: absolute; top: 500px; left: 20px;"><a href="{% url 'EventNation:createEvent' %}">Crie um evento
+        </a></button>
+    {% endif %}
+{% endif %}
 </body>
+{% endblock %}
 
 </html>
