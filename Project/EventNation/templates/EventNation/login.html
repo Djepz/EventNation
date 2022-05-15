@@ -1,17 +1,34 @@
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <strong>{% if message.tags %} {% endif %}{{ message }}</strong>
-    {% endfor %}
-</ul>
-{% endif %}
+<!DOCTYPE html>
+<html>
+{% extends "EventNation/EventNation.html" %}
+{% load static %}
+{% load index %}
+<head>
+    <title>EventNation</title>
+    <link rel="stylesheet" type="text/css" href="login.css">
+</head>
 
+{% block slideshow %}{% endblock %}
+{% block content %}
 
-<form class="form" action="{% url 'EventNation:login' %}" method="post">
-        {% csrf_token %}
-<p>Username: <input type="text" name="username" id="username" value="{{ username.id }}" /></p>
-<p>Password: <input type="password" name="password" id="password" value="{{ password.id }}" /></p>
-<p><input type="submit" value="Login" /></p>
-</form>
-
-<p><a href="{% url 'EventNation:home' %}">Return to homepage</a></p>
+</body>
+<center>
+    <div style="margin-top: 100px; color: black;">
+        {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+             <strong>{% if message.tags %} {% endif %}{{ message }}</strong>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        <form class="form" action="{% url 'EventNation:login' %}" method="post">
+            {% csrf_token %}
+            <p>Username: <input type="text" name="username" id="username" value="{{ username.id }}" /></p>
+            <p>Password: <input type="password" name="password" id="password" value="{{ password.id }}" /></p>
+            <p><input type="submit" value="Login" /></p>
+        </form>
+    </div>
+    <p><a href="{% url 'EventNation:home' %}">Return to homepage</a></p>
+</center>
+{% endblock %}
+</html>

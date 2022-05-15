@@ -11,6 +11,8 @@ from django.db import models
 
 class Organizer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    empresa = models.CharField(max_length=50)
+    IBAN = models.CharField(max_length=30)
 
 
 class Event(models.Model):

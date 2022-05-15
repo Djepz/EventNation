@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+{% extends "EventNation/EventNation.html" %}
+{% load static %}
+{% load index %}
+<head>
+    <title>EventNation</title>
+    <link rel="stylesheet" type="text/css" href="AboutUs.css">
+</head>
+
+{% block slideshow %}{% endblock %}
+{% block content %}
+    <div class="about-section">
+        <h1>About Us</h1>
+        <p>Somos um grupo de Estudantes do ISCTE-IUL</p>
+        <p>Fizemos este site no âmbito da UC - Desenvolvimento para a Internet e Aplicações Móveis</p>
+    </div>
+
+    <h2 style="text-align:center">Nós</h2>
+    <div class="row">
+        <div class="column">
+            <div class="card">
+                <img alt="Daniel" style="width:100%">
+                <div class="container">
+                    <h2>Daniel Marques</h2>
+                    <p class="title">nº 70267</p>
+                    <p>LEI - Licenciatura Engenheria Informática</p>
+                    <p>dfcms1@iscte-iul.pt</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <img alt="Rafael" style="width:100%">
+                <div class="container">
+                    <h2>Rafael Costa</h2>
+                    <p class="title">nº 92726</p>
+                    <p>LEI - Licenciatura Engenheria Informática</p>
+                    <p>rscaa1@iscte-iul.pt</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+
+</html>

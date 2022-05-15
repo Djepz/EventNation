@@ -1,7 +1,7 @@
+{% extends "EventNation/EventNation.html" %}
 
-
-
-
+{% block slideshow %}{% endblock %}
+{% block content %}
 <h2>Review:</h2>
  <form class="form" action="{% url 'EventNation:review' event.id %}" method="post">
     {% csrf_token %}
@@ -24,3 +24,4 @@
 {% endfor %}
     </ul>
 {% endif %}
+{% endblock %}
